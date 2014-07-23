@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'pry'
+
 class STL
   def initialize options={}, &block
     @buffer = []
@@ -37,5 +39,20 @@ class STL
     stlputs "endloop"
     stlputs "endfacet"
   end
+
+end
+
+STL.new file: 'hdd-keeper.stl' do
+  LeftTop     = {x: 1, y:2, z:0}
+  LeftMiddle  = {x: 1, y:1, z:0}
+  LeftBottom  = {x: 2, y:0, z:0}
+
+  reverse_x = ->(hash) do
+    hash.clone.merge(x: -hash[:x])
+  end
+
+  RightTop    = reverse_x.call(LeftTop)
+  RightMiddle = reverse_x.call(LeftMiddle)
+  RightBottom = reverse_x.call(LeftBottom)
 
 end
