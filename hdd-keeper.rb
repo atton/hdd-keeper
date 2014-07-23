@@ -46,9 +46,14 @@ class HDDKeeper
   LeftTop     = {x: 1, y:2, z:0}
   LeftMiddle  = {x: 1, y:1, z:0}
   LeftBottom  = {x: 2, y:0, z:0}
+  Length      = 3
 
   def self.reverse_x hash
     hash.clone.merge(x: -hash[:x])
+  end
+
+  def self.end_point hash
+    hash.clone.merge(z: Length + hash[:z])
   end
 
   RightTop    = reverse_x(LeftTop)
@@ -64,11 +69,40 @@ class HDDKeeper
     ]
   end
 
+  def self.end_surface
+    begin_surface.map do |pane|
+      pane.reverse.map do |point|
+        point.merge(z: point[:z] + Length)
+      end
+    end
+  end
+
+  def self.body_points
+    [
+      [RightBottom, LeftBottom].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
+      [RightBottom, RightTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
+      [RightMiddle, RightTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
+      [LeftBottom, LeftTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
+      [LeftMiddle, LeftTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
+      [LeftMiddle, RightMiddle].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p}
+    ]
+  end
+
+  def self.body
+    self.body_points.map{|pane| pane.each_cons(3).to_a.map.with_index{|p,i| i.zero? ? p : p.reverse} }.flatten(1)
+  end
+
 end
 
 STL.new file: 'hdd-keeper.stl' do
 
   HDDKeeper.begin_surface.each do |pane|
+    face *pane
+  end
+  HDDKeeper.end_surface.each do |pane|
+    face *pane
+  end
+  HDDKeeper.body.each do |pane|
     face *pane
   end
 end
