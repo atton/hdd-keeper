@@ -42,17 +42,33 @@ class STL
 
 end
 
-STL.new file: 'hdd-keeper.stl' do
+class HDDKeeper
   LeftTop     = {x: 1, y:2, z:0}
   LeftMiddle  = {x: 1, y:1, z:0}
   LeftBottom  = {x: 2, y:0, z:0}
 
-  reverse_x = ->(hash) do
+  def self.reverse_x hash
     hash.clone.merge(x: -hash[:x])
   end
 
-  RightTop    = reverse_x.call(LeftTop)
-  RightMiddle = reverse_x.call(LeftMiddle)
-  RightBottom = reverse_x.call(LeftBottom)
+  RightTop    = reverse_x(LeftTop)
+  RightMiddle = reverse_x(LeftMiddle)
+  RightBottom = reverse_x(LeftBottom)
 
+  def self.begin_surface
+    [
+      [LeftTop, LeftMiddle, LeftBottom],
+      [RightTop, RightBottom, RightMiddle],
+      [LeftMiddle, RightMiddle, RightBottom],
+      [LeftMiddle, RightBottom, LeftBottom]
+    ]
+  end
+
+end
+
+STL.new file: 'hdd-keeper.stl' do
+
+  HDDKeeper.begin_surface.each do |pane|
+    face *pane
+  end
 end
