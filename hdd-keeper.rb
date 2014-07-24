@@ -62,10 +62,10 @@ class HDDKeeper
 
   def self.begin_surface
     [
-      [LeftTop, LeftMiddle, LeftBottom],
-      [RightTop, RightBottom, RightMiddle],
-      [LeftMiddle, RightMiddle, RightBottom],
-      [LeftMiddle, RightBottom, LeftBottom]
+      [LeftBottom, LeftMiddle, LeftTop],
+      [RightTop, RightMiddle, RightBottom],
+      [RightBottom, RightMiddle, LeftMiddle],
+      [LeftBottom, RightBottom, LeftMiddle]
     ]
   end
 
