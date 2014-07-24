@@ -77,15 +77,20 @@ class HDDKeeper
     end
   end
 
+  def self.line_to_end_line line
+    line.cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p}
+  end
+
+
   def self.body_points
     [
-      [RightBottom, LeftBottom].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
-      [RightBottom, RightTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
-      [RightMiddle, RightTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
-      [LeftBottom, LeftTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
-      [LeftMiddle, LeftTop].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p},
-      [LeftMiddle, RightMiddle].cycle(2).map.with_index(1){|p, i| i>2 ? end_point(p) : p}
-    ]
+      [RightBottom, LeftBottom],
+      [RightBottom, RightTop],
+      [RightMiddle, RightTop],
+      [LeftBottom, LeftTop],
+      [LeftMiddle, LeftTop],
+      [LeftMiddle, RightMiddle]
+    ].map{|l| line_to_end_line(l)}
   end
 
   def self.body
