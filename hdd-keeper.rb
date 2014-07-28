@@ -97,17 +97,15 @@ class HDDKeeper
     self.body_points.map{|pane| pane.each_cons(3).to_a.map.with_index{|p,i| i.zero? ? p : p.reverse} }.flatten(1)
   end
 
+  def self.all_triangles
+    begin_surface + end_surface + body
+  end
+
 end
 
 STL.new file: 'hdd-keeper.stl' do
 
-  HDDKeeper.begin_surface.each do |pane|
-    face *pane
-  end
-  HDDKeeper.end_surface.each do |pane|
-    face *pane
-  end
-  HDDKeeper.body.each do |pane|
+  HDDKeeper.all_triangles.each do |pane|
     face *pane
   end
 end
