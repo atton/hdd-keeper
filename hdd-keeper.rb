@@ -43,6 +43,7 @@ class STL
 end
 
 class HDDKeeper
+  # Change this parameters
   LeftTop     = {x: 1, y:2, z:0}
   LeftMiddle  = {x: 1, y:1, z:0}
   LeftBottom  = {x: 2, y:0, z:0}
