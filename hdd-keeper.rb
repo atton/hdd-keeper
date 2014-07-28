@@ -85,10 +85,10 @@ class HDDKeeper
   def self.body_points
     [
       [RightBottom, LeftBottom],
-      [RightBottom, RightTop],
+      [RightTop, RightBottom],
       [RightMiddle, RightTop],
       [LeftBottom, LeftTop],
-      [LeftMiddle, LeftTop],
+      [LeftTop, LeftMiddle],
       [LeftMiddle, RightMiddle]
     ].map{|l| line_to_end_line(l)}
   end
